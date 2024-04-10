@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'PT Serif';
+    src: url('../fonts/ptserif.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+.sl_re-post{
+    width: 100%;
+    box-sizing: border-box;
+    margin: 25px 0;
+    padding-left: 10px;
+    position: relative;
+    font-family: 'PT Serif', serif;
+}
+.re-link{
+    display: grid;
+    grid-template-columns: auto 150px;
+    grid-gap: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    align-items: center;
+}
+.re-button{
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    left: 10px;
+    top: -10px;
+}
+p.re-title{
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+}
+.re-thumbnail{
+    width: 100%;
+    height: 80px;
+    object-position: center;
+    object-fit: cover;
+}
+
+/* Media Query for mobile */
+@media( max-width: 567px){
+    .re-link{
+        grid-template-columns: auto 90px;
+    }
+    .re-button{
+        font-size: 10px;
+    }
+    .re-title{
+        font-size: 12px;
+    }
+}
+
