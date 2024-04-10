@@ -61,6 +61,17 @@ function sl_re_target_render(){
     <?php
 }
 
+function sl_re_terkait_render(){
+    $options = get_option('sl_re_options'); ?>
+    <select name='sl_re_options[terkait]'>
+        <option value='all' <?php selected( $options['terkait'], 'all' ); ?>>Semua Post</option>
+        <option value='category' <?php selected( $options['terkait'], 'category' ); ?>>Category Only</option>
+        <option value='tag' <?php selected( $options['terkait'], 'tag' ); ?>>Tag Only</option>
+        <option value="cat_tag" <?php selected( $options['terkait'], 'cat_tag' ); ?>>Category & Tag</option>
+    </select>
+    <?php
+}
+
 
 function sl_re_text_color_render() {
     $options = get_option('sl_re_options');
@@ -120,6 +131,15 @@ function sl_re_settings_init() {
         'sl_re_target',
         __( 'Target', 'wordpress' ),
         'sl_re_target_render',
+        'silo_re_post',
+        'sl_re_plugin_section'
+    );
+
+    // Terkait dengan --------------------------
+    add_settings_field(
+        'sl_re_terkait',
+        __( 'Terkait Dengan', 'wordpress' ),
+        'sl_re_terkait_render',
         'silo_re_post',
         'sl_re_plugin_section'
     );

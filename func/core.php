@@ -52,6 +52,7 @@ add_filter('the_content', 'tambah_kata_setiap_300_kata');
 
 // mendapatkan data postingan ==================
 function render_related_func($current_post_id) {
+    $terkait = get_option('sl_re_options')['terkait'];
     $kategori = get_the_category($current_post_id);
     $tags = wp_get_post_tags($current_post_id, array('fields' => 'ids'));
 
@@ -60,7 +61,28 @@ function render_related_func($current_post_id) {
         'posts_per_page' => 10,
         'post__not_in' => array($current_post_id),
         'fields' => 'ids',
-        'tax_query' => array(
+    );
+
+    if( $terkait === 'category' ){
+        $args['tax_query'] = array(
+            'relation' => 'OR',
+            array(
+                'taxonomy' => 'category',
+                'field'    => 'term_id',
+                'terms'    => wp_list_pluck($kategori, 'term_id'),
+            ),
+        );
+    } else if( $terkait === 'tag' ){
+        $args['tax_query'] = array(
+            'relation' => 'OR',
+            array(
+                'taxonomy' => 'post_tag',
+                'field'    => 'term_id',
+                'terms'    => $tags,
+            ),
+        );
+    } else if( $terkait === 'cat_tag' ){
+        $args['tax_query'] = array(
             'relation' => 'OR',
             array(
                 'taxonomy' => 'category',
@@ -72,8 +94,10 @@ function render_related_func($current_post_id) {
                 'field'    => 'term_id',
                 'terms'    => $tags,
             ),
-        ),
-    );
+        );
+    }
+
+
 
     $query = new WP_Query($args);
     return $query->posts;
@@ -105,3 +129,22 @@ function jalankan_fungsi_cetak_css(){
     wp_enqueue_style( 'sl-re-style', plugins_url( '../css/style.css', __FILE__ ), array(), fileatime( plugin_dir_path( __FILE__ ) . '../css/style.css' ), 'all' );
 }
 
+// $args = array(
+//     'post_type' => 'post',
+//     'posts_per_page' => 10,
+//     'post__not_in' => array($current_post_id),
+//     'fields' => 'ids',
+//     'tax_query' => array(
+//         'relation' => 'OR',
+//         array(
+//             'taxonomy' => 'category',
+//             'field'    => 'term_id',
+//             'terms'    => wp_list_pluck($kategori, 'term_id'),
+//         ),
+//         array(
+//             'taxonomy' => 'post_tag',
+//             'field'    => 'term_id',
+//             'terms'    => $tags,
+//         ),
+//     ),
+// );

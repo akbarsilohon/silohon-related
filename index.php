@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Silohon Postingan Terkait
- * Version: 1.7.9
+ * Version: 1.8.0
  * Plugin URI: https://github.com/akbarsilohon/silohon-related.git
  * Description: Plugin wordpress untuk menambah artikel terkait pada bodi artikel.
  * Tags: silohon, artikel terkait, irp
