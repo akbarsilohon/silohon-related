@@ -8,38 +8,51 @@
 add_action( 'admin_init', 'sl_re_settings_init' );
 
 function sl_re_settings_section_callback() {
-    echo '<p>Pengaturan plugin related post by silohon. Atur warna yang sesuai, tentukan setelah berapa kata akan di injeck</p>';
+    echo '<p class="sl_re-p">Customize the style and appearance of Silohon Related Post, set the number of inline related posts in each article, set the injection at every word count, choose the link type, target link, and adjust the color to your liking.</p>';
 }
 
 function sl_re_bg_color_render() {
     $options = get_option('sl_re_options');
+    $bgColor = !empty($options['bg_color']) ? $options['bg_color'] : '#333333';
     ?>
-    <input type='color' name='sl_re_options[bg_color]' value='<?php echo esc_attr($options['bg_color']); ?>'>
+    <input type='color' name='sl_re_options[bg_color]' value='<?php echo esc_attr($bgColor); ?>'>
     <?php
 }
 
 function sl_re_border_color_render() {
     $options = get_option('sl_re_options');
+    $borderColor = !empty($options['border_color']) ? $options['border_color'] : '#e74b2c';
     ?>
-    <input type='color' name='sl_re_options[border_color]' value='<?php echo esc_attr($options['border_color']); ?>'>
+    <input type='color' name='sl_re_options[border_color]' value='<?php echo esc_attr($borderColor); ?>'>
+    <?php
+}
+
+function sl_re_text_color_render() {
+    $options = get_option('sl_re_options');
+    $textColor = !empty( $options['text_color']) ? $options['text_color'] : '#ffffff';
+    ?>
+    <input type='color' name='sl_re_options[text_color]' value='<?php echo esc_attr( $textColor ); ?>'>
     <?php
 }
 
 function sl_re_limit_render(){
-    $options = get_option('sl_re_options'); ?>
-    <input type='number' name='sl_re_options[limit]' value='<?php echo esc_attr($options['limit']); ?>'>
+    $options = get_option('sl_re_options');
+    $reCount = !empty($options['limit']) ? $options['limit'] : 300; ?>
+    <input type='number' name='sl_re_options[limit]' value='<?php echo esc_attr($reCount); ?>'>
     <?php
 }
 
 function sl_re_jumlah_render(){
-    $options = get_option('sl_re_options'); ?>
-    <input type='number' name='sl_re_options[jumlah]' value='<?php echo esc_attr($options['jumlah']); ?>'>
+    $options = get_option('sl_re_options');
+    $reJumlah = !empty($options['jumlah']) ? $options['jumlah'] : 3; ?>
+    <input type='number' name='sl_re_options[jumlah]' value='<?php echo esc_attr($reJumlah); ?>'>
     <?php
 }
 
 function sl_re_text_read_to_render(){
-    $options = get_option('sl_re_options'); ?>
-    <input type='text' name='sl_re_options[text_read_to]' value='<?php echo esc_attr($options['text_read_to']); ?>'>
+    $options = get_option('sl_re_options');
+    $reText = !empty($options['text_read_to']) ? $options['text_read_to'] : 'Read Too:'; ?>
+    <input type='text' name='sl_re_options[text_read_to]' value='<?php echo esc_attr($reText); ?>'>
     <?php
 }
 
@@ -64,7 +77,7 @@ function sl_re_target_render(){
 function sl_re_terkait_render(){
     $options = get_option('sl_re_options'); ?>
     <select name='sl_re_options[terkait]'>
-        <option value='all' <?php selected( $options['terkait'], 'all' ); ?>>Semua Post</option>
+        <option value='all' <?php selected( $options['terkait'], 'all' ); ?>>All Posts</option>
         <option value='category' <?php selected( $options['terkait'], 'category' ); ?>>Category Only</option>
         <option value='tag' <?php selected( $options['terkait'], 'tag' ); ?>>Tag Only</option>
         <option value="cat_tag" <?php selected( $options['terkait'], 'cat_tag' ); ?>>Category & Tag</option>
@@ -73,19 +86,12 @@ function sl_re_terkait_render(){
 }
 
 
-function sl_re_text_color_render() {
-    $options = get_option('sl_re_options');
-    ?>
-    <input type='color' name='sl_re_options[text_color]' value='<?php echo esc_attr($options['text_color']); ?>'>
-    <?php
-}
-
 function sl_re_settings_init() {
     register_setting( 'sl-re-settings', 'sl_re_options' );
 
     add_settings_section(
         'sl_re_plugin_section',
-        __( 'Tampilan', 'wordpress' ),
+        __( null, 'wordpress' ),
         'sl_re_settings_section_callback',
         'silo_re_post'
     );
@@ -93,7 +99,7 @@ function sl_re_settings_init() {
     // Jumlah artikel di injek --------------------
     add_settings_field(
         'sl_re_jumlah',
-        __( 'Jumlah', 'wordpress' ),
+        __( 'Inline Related Count', 'wordpress' ),
         'sl_re_jumlah_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -102,7 +108,7 @@ function sl_re_settings_init() {
     // Injek setelah berapa kata --------------------
     add_settings_field(
         'sl_re_limit',
-        __( 'Injek Setelah', 'wordpress' ),
+        __( 'Every Number of Words', 'wordpress' ),
         'sl_re_limit_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -111,7 +117,7 @@ function sl_re_settings_init() {
     // Text read to -----------------------------
     add_settings_field(
         'sl_re_text_read_to',
-        __( 'Text Read To', 'wordpress' ),
+        __( 'Text Read Too', 'wordpress' ),
         'sl_re_text_read_to_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -138,7 +144,7 @@ function sl_re_settings_init() {
     // Terkait dengan --------------------------
     add_settings_field(
         'sl_re_terkait',
-        __( 'Terkait Dengan', 'wordpress' ),
+        __( 'Related Type', 'wordpress' ),
         'sl_re_terkait_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -146,7 +152,7 @@ function sl_re_settings_init() {
 
     add_settings_field(
         'sl_re_bg_color',
-        __( 'Warna Latar Belakang', 'wordpress' ),
+        __( 'Background Color', 'wordpress' ),
         'sl_re_bg_color_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -154,7 +160,7 @@ function sl_re_settings_init() {
 
     add_settings_field(
         'sl_re_border_color',
-        __( 'Warna Border', 'wordpress' ),
+        __( 'Border Color', 'wordpress' ),
         'sl_re_border_color_render',
         'silo_re_post',
         'sl_re_plugin_section'
@@ -162,7 +168,7 @@ function sl_re_settings_init() {
 
     add_settings_field(
         'sl_re_text_color',
-        __( 'Warna Teks', 'wordpress' ),
+        __( 'Text Color', 'wordpress' ),
         'sl_re_text_color_render',
         'silo_re_post',
         'sl_re_plugin_section'

@@ -128,23 +128,3 @@ function render_html_related_post($post_id) {
 function jalankan_fungsi_cetak_css(){
     wp_enqueue_style( 'sl-re-style', plugins_url( '../css/style.css', __FILE__ ), array(), fileatime( plugin_dir_path( __FILE__ ) . '../css/style.css' ), 'all' );
 }
-
-// $args = array(
-//     'post_type' => 'post',
-//     'posts_per_page' => 10,
-//     'post__not_in' => array($current_post_id),
-//     'fields' => 'ids',
-//     'tax_query' => array(
-//         'relation' => 'OR',
-//         array(
-//             'taxonomy' => 'category',
-//             'field'    => 'term_id',
-//             'terms'    => wp_list_pluck($kategori, 'term_id'),
-//         ),
-//         array(
-//             'taxonomy' => 'post_tag',
-//             'field'    => 'term_id',
-//             'terms'    => $tags,
-//         ),
-//     ),
-// );
