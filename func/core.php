@@ -55,12 +55,14 @@ function render_related_func($current_post_id) {
     $terkait = get_option('sl_re_options')['terkait'];
     $kategori = get_the_category($current_post_id);
     $tags = wp_get_post_tags($current_post_id, array('fields' => 'ids'));
+    $jumlah = !empty(get_option('sl_re_options')['jumlah']) ? get_option('sl_re_options')['jumlah'] : 3;
 
     $args = array(
         'post_type' => 'post',
-        'posts_per_page' => 10,
+        'posts_per_page' => $jumlah,
         'post__not_in' => array($current_post_id),
         'fields' => 'ids',
+        'orderby'   =>  'rand'
     );
 
     if( $terkait === 'category' ){
