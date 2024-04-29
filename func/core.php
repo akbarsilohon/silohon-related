@@ -32,15 +32,18 @@ function tambah_kata_setiap_300_kata($content) {
 
                 unset($kata_tambahan[$random_key]);
 
-                $fragment->appendXML(render_html_related_post($random_post_id));
-                
-                if ($node->parentNode->nextSibling) {
-                    $node->parentNode->parentNode->insertBefore($fragment, $node->parentNode->nextSibling);
-                } else {
-                    $node->parentNode->parentNode->appendChild($fragment);
+                $related_post_content = render_html_related_post($random_post_id);
+                if (!empty($related_post_content)) {
+                    $fragment->appendXML($related_post_content);
+                    
+                    if ($node->parentNode->nextSibling) {
+                        $node->parentNode->parentNode->insertBefore($fragment, $node->parentNode->nextSibling);
+                    } else {
+                        $node->parentNode->parentNode->appendChild($fragment);
+                    }
+                    $totalKata = 0;
+                    $pengulanganSaatIni++;
                 }
-                $totalKata = 0;
-                $pengulanganSaatIni++;
             }
         }
     }
@@ -113,12 +116,30 @@ function render_html_related_post($post_id) {
     $text = !empty( get_option('sl_re_options')['text_read_to']) ? get_option('sl_re_options')['text_read_to'] : 'Baca juga:';
     $link = !empty( get_option('sl_re_options')['type_link']) ? get_option('sl_re_options')['type_link'] : 'nofollow';
     $target = !empty( get_option('sl_re_options')['target']) ? get_option('sl_re_options')['target'] : '_blank';
+
+    $thumbnailUri = '';
+    if(has_post_thumbnail( $post_id )){
+        $thumbnailUri = get_the_post_thumbnail_url( $post_id, 'thumbnail' );
+        $printImage = '<img src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail"/>';
+    } else{
+        $getContent = get_post_field('post_content', $post_id);
+        $array_thumbnail = '';
+
+        preg_match('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $getContent, $array_thumbnail);
+
+        if (!empty($array_thumbnail[1])) {
+            $thumbnailUri = esc_url( $array_thumbnail[1] );
+            $printImage = '<img src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail"/>';
+        } else {
+            $printImage = '<div class="re-thumbnail"></div>';
+        }
+    }
     
-    $outputHtml = '<div class="sl_re-post" style="background-color: ' . $bgColor . '; border-left: 4px solid ' . $borderColor . ';">';
-    $outputHtml .= '<a rel="' . $link . '" target="'. $target .'" href="' . get_the_permalink($post_id) . '" class="re-link">';
+    $outputHtml = '<div class="sl_re-post">';
     $outputHtml .= '<span class="re-button" style="background-color: ' . $borderColor . '; color: '. $textColor .'">'. $text .'</span>';
+    $outputHtml .= '<a rel="' . $link . '" target="'. $target .'" href="' . get_the_permalink($post_id) . '" class="re-link" style="background-color: ' . $bgColor . '; border-left: 4px solid ' . $borderColor . ';">';
     $outputHtml .= '<p class="re-title" style="color: ' . $textColor . ';">' . get_the_title($post_id) . '</p>';
-    $outputHtml .= '<img src="' . get_the_post_thumbnail_url($post_id, 'thumbnail', array('class' => 'related-thumbnail', 'loading' => 'lazy')) . '" alt="' . get_the_title($post_id) . '" class="re-thumbnail"/>';
+    $outputHtml .= $printImage;
     $outputHtml .= '</a>';
     $outputHtml .= '</div>';
 
