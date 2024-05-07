@@ -1,50 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap');
-.sl_re-post{
-    font-family: 'Heebo', sans-serif;
-    display: block;
-    margin: 25px 0;
-    position: relative;
-}
-.sl_re-post .re-link{
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+.silohon-irp{
+    width: 100%;
     display: grid;
     grid-template-columns: auto 150px;
     gap: 1rem;
-    padding-left: 10px;
+    margin-bottom: 1rem;
+    border-radius: 10px;
     text-decoration: none;
-	height: 100%;
 }
-.sl_re-post .re-button{
-    font-size: 12px;
-    border-radius: 5px;
-    padding: 5px 10px;
+.silohon-irp .irp-relative{
+    position: relative;
+    padding-left: 15px;
+}
+.irp-relative .irp-button{
     position: absolute;
-    top: -10px;
-    left: 10px;
+    top: -15px;
+    left: 15px;
+    padding: 5px 10px;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    line-height: 1.3;
 }
-.re-link .re-title{
-    margin-top: 25px;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.5;
+.irp-relative .irp-title{
+    font-family: 'Roboto Slab', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 20px;
+    line-height: 1.3;
 }
-.re-link .re-thumbnail{
-    width: 100%;
-    height: 100%;
-    max-height: 100px;
+.silohon-irp .re-thumbnail{
+    width: 100% !important;
+    height: 90px !important;
     object-position: center;
     object-fit: cover;
+    border-radius: 10px;
+    margin: 0 !important;
 }
-
-@media(max-width:580px){
-    .sl_re-post .re-link{
-        grid-template-columns: auto 80px;
-        gap: 5px;
+@media(max-width:560px){
+    ul .silohon-irp,
+    ol .silohon-irp{
+        width: calc(100% + 20px);
+        margin-left: -20px;
     }
-    .sl_re-post{
-        margin-left: -10px;
+    .silohon-irp{
+        grid-template-columns: auto 90px;
+        gap: 10px;
+        align-items: center;
     }
-    .re-link .re-title{
-		margin-top: 22px;
+    .silohon-irp .irp-relative{
+        padding-left: 10px;
+    }
+    .irp-relative .irp-button{
+        left: 10px;
+    }
+    .irp-relative .irp-button{
+        left: 10px;
+    }
+    .irp-relative .irp-title{
         font-size: 14px;
     }
 }

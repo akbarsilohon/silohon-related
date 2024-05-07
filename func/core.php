@@ -6,6 +6,10 @@ function tambah_kata_setiap_300_kata($content) {
     $pengulangan = get_option('sl_re_options')['jumlah'];
     $kata_tambahan = render_related_func($post->ID);
 
+    if (empty($content)) {
+        return $content;
+    }
+
     $dom = new DOMDocument();
     @$dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
@@ -110,12 +114,6 @@ function render_related_func($current_post_id) {
 
 // mendapatkan html untuk related post =========
 function render_html_related_post($post_id) {
-    $bgColor = !empty( get_option('sl_re_options')['bg_color']) ? get_option('sl_re_options')['bg_color'] : '#333';
-    $borderColor = !empty( get_option('sl_re_options')['border_color']) ? get_option('sl_re_options')['border_color'] : '#90ee90';
-    $textColor = !empty( get_option('sl_re_options')['text_color']) ? get_option('sl_re_options')['text_color'] : '#fff';
-    $text = !empty( get_option('sl_re_options')['text_read_to']) ? get_option('sl_re_options')['text_read_to'] : 'Baca juga:';
-    $link = !empty( get_option('sl_re_options')['type_link']) ? get_option('sl_re_options')['type_link'] : 'nofollow';
-    $target = !empty( get_option('sl_re_options')['target']) ? get_option('sl_re_options')['target'] : '_blank';
 
     $thumbnailUri = '';
     if(has_post_thumbnail( $post_id )){
@@ -134,14 +132,22 @@ function render_html_related_post($post_id) {
             $printImage = '<div class="re-thumbnail"></div>';
         }
     }
+
+    $bgColor = !empty( get_option('sl_re_options')['bg_color']) ? get_option('sl_re_options')['bg_color'] : '#333';
+    $borderColor = !empty( get_option('sl_re_options')['border_color']) ? get_option('sl_re_options')['border_color'] : '#90ee90';
+    $textColor = !empty( get_option('sl_re_options')['text_color']) ? get_option('sl_re_options')['text_color'] : '#fff';
+    $text = !empty( get_option('sl_re_options')['text_read_to']) ? get_option('sl_re_options')['text_read_to'] : 'Baca juga:';
+    $link = !empty( get_option('sl_re_options')['type_link']) ? get_option('sl_re_options')['type_link'] : 'nofollow';
+    $target = !empty( get_option('sl_re_options')['target']) ? get_option('sl_re_options')['target'] : '_blank';
     
-    $outputHtml = '<div class="sl_re-post">';
-    $outputHtml .= '<span class="re-button" style="background-color: ' . $borderColor . '; color: '. $textColor .'">'. $text .'</span>';
-    $outputHtml .= '<a rel="' . $link . '" target="'. $target .'" href="' . get_the_permalink($post_id) . '" class="re-link" style="background-color: ' . $bgColor . '; border-left: 4px solid ' . $borderColor . ';">';
-    $outputHtml .= '<p class="re-title" style="color: ' . $textColor . ';">' . get_the_title($post_id) . '</p>';
+
+    $outputHtml = '<a target="'.$target.'" href="'.esc_url(get_the_permalink($post_id)).'" rel="'.$link.'" title="'.get_the_title($post_id).'" class="silohon-irp" style="background-color: '.$bgColor.';border-left: 4px solid '.$borderColor.';">';
+    $outputHtml .= '<div class="irp-relative">';
+    $outputHtml .= '<span class="irp-button" style="background-color: '.$borderColor.'; color: #ffffff;">'.$text.'</span>';
+    $outputHtml .= '<p class="irp-title" style="color: '.$textColor.';">'.get_the_title($post_id).'</p>';
+    $outputHtml .= '</div>';
     $outputHtml .= $printImage;
     $outputHtml .= '</a>';
-    $outputHtml .= '</div>';
 
     return $outputHtml;
 }
