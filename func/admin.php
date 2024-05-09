@@ -96,6 +96,71 @@ function sl_re_settings_init() {
         'silo_re_post'
     );
 
+    // Active or not ----------------
+    add_settings_field( 
+        'sl_re_active', 
+        'Active', function(){
+            $options = get_option('sl_re_options'); ?>
+
+            <input type="checkbox" name="sl_re_options[active]" value="true" <?php if(!empty($options['active']) && $options['active'] === 'true' ) echo 'checked'; ?>>
+
+            <?php
+        },
+        'silo_re_post',
+        'sl_re_plugin_section'
+    );
+
+
+    // Chose your style --------------------------
+    add_settings_field( 
+        'sl_re_style',
+        'Style',
+        function(){
+            $options = get_option('sl_re_options');
+            $text = !empty($options['text_read_to']) ? $options['text_read_to'] : 'Read Too:';
+            $bg = !empty($options['bg_color']) ? $options['bg_color'] : '#e5ac1b';
+            $border = !empty($options['border_color']) ? $options['border_color'] : '#000000';
+            $color = !empty($options['text_color']) ? $options['text_color'] : '#000000'; ?>
+
+            <div class="choose_style">
+                <input type="radio" name="sl_re_options[style]" value="" <?php checked( $options['style'], '' ); ?>>
+                <div class="silohon-irp" style="background-color: <?php echo $bg; ?>;border-left: 4px solid <?php echo $border; ?>;">
+                    <div class="irp-relative">
+                        <span class="irp-button" style="background-color: <?php echo $border; ?>; color: #ffffff;"><?php echo $text; ?></span>
+                        <p class="irp-title" style="color: <?php echo $color; ?>;">Example Style 1 Related Articles Plugin By Silohon</p>
+                    </div>
+                    <img src="<?php echo plugin_dir_url( __FILE__ ) . '../img/thumb1.webp'; ?>" class="re-thumbnail">
+                </div>
+            </div>
+
+            <div class="choose_style">
+                <input type="radio" name="sl_re_options[style]" value="style2" <?php checked( $options['style'], 'style2' ); ?>>
+                <div class="silohon-irp2" style="border-left: 4px solid <?php echo $border; ?>;background-color: <?php echo $bg; ?>;">
+                    <div class="irp-relative2">
+                        <p class="irp-title2" style="color:<?php echo $color; ?>;">Example Style 2 Related Articles Plugin By Silohon</p>
+                        <span class="irp-button2" style="background-color: <?php echo $border; ?>;color:#ffffff;"><?php echo $text; ?></span>
+                    </div>
+                    <img style="border-left: 4px solid <?php echo $border; ?>;" src="<?php echo plugin_dir_url( __FILE__ ) . '../img/thumb1.webp'; ?>" class="re-thumbnail2">
+                </div>
+            </div>
+
+            <div class="choose_style">
+                <input type="radio" name="sl_re_options[style]" value="style3" <?php checked( $options['style'], 'style3' ); ?>>
+                <div class="silohon-irp3">
+                    <img style="border: 4px solid <?php echo $border; ?>;" src="<?php echo plugin_dir_url( __FILE__ ) . '../img/thumb1.webp'; ?>" class="re-thumbnail3">
+                    <div class="irp-relative3" style="background-color: <?php echo $bg; ?>;border-right: 4px solid <?php echo $border; ?>;">
+                        <p class="irp-title3" style="color:<?php echo $color; ?>;">Example Style 3 Related Articles Plugin By Silohon</p>
+                        <span class="irp-button3" style="background-color: <?php echo $border; ?>;color:#ffffff;"><?php echo $text; ?></span>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+        },
+        'silo_re_post',
+        'sl_re_plugin_section'
+    );
+
     // Jumlah artikel di injek --------------------
     add_settings_field(
         'sl_re_jumlah',
