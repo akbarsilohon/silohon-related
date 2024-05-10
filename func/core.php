@@ -1,5 +1,10 @@
 <?php
 
+$active = get_option('sl_re_options');
+if(!empty( $active['active']) && $active['active'] === 'true' ){
+    add_filter('the_content', 'tambah_kata_setiap_300_kata');
+}
+
 function tambah_kata_setiap_300_kata($content) {
     global $post;
     $kata_per_injeksi = !empty(get_option('sl_re_options')['limit']) ? get_option('sl_re_options')['limit'] : 300;
@@ -55,7 +60,6 @@ function tambah_kata_setiap_300_kata($content) {
     $content = $dom->saveHTML();
     return $content;
 }
-add_filter('the_content', 'tambah_kata_setiap_300_kata');
 
 // mendapatkan data postingan ==================
 function render_related_func($current_post_id) {
@@ -118,7 +122,6 @@ function render_html_related_post($post_id) {
     $thumbnailUri = '';
     if(has_post_thumbnail( $post_id )){
         $thumbnailUri = get_the_post_thumbnail_url( $post_id, 'thumbnail' );
-        $printImage = '<img src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail"/>';
     } else{
         $getContent = get_post_field('post_content', $post_id);
         $array_thumbnail = '';
@@ -127,9 +130,8 @@ function render_html_related_post($post_id) {
 
         if (!empty($array_thumbnail[1])) {
             $thumbnailUri = esc_url( $array_thumbnail[1] );
-            $printImage = '<img src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail"/>';
         } else {
-            $printImage = '<div class="re-thumbnail"></div>';
+            $thumbnailUri = esc_url( plugin_dir_url( __FILE__ ) . '../img/thumb1.webp' );
         }
     }
 
@@ -139,15 +141,33 @@ function render_html_related_post($post_id) {
     $text = !empty( get_option('sl_re_options')['text_read_to']) ? get_option('sl_re_options')['text_read_to'] : 'Baca juga:';
     $link = !empty( get_option('sl_re_options')['type_link']) ? get_option('sl_re_options')['type_link'] : 'nofollow';
     $target = !empty( get_option('sl_re_options')['target']) ? get_option('sl_re_options')['target'] : '_blank';
-    
+    $style = get_option('sl_re_options')['style'];
 
-    $outputHtml = '<a target="'.$target.'" href="'.esc_url(get_the_permalink($post_id)).'" rel="'.$link.'" title="'.get_the_title($post_id).'" class="silohon-irp" style="background-color: '.$bgColor.';border-left: 4px solid '.$borderColor.';">';
-    $outputHtml .= '<div class="irp-relative">';
-    $outputHtml .= '<span class="irp-button" style="background-color: '.$borderColor.'; color: #ffffff;">'.$text.'</span>';
-    $outputHtml .= '<p class="irp-title" style="color: '.$textColor.';">'.get_the_title($post_id).'</p>';
-    $outputHtml .= '</div>';
-    $outputHtml .= $printImage;
-    $outputHtml .= '</a>';
+    if( $style === 'style2' ){
+        $outputHtml = '<a target="'.$target.'" href="'. esc_url(get_the_permalink( $post_id )) .'" rel="'.$link.'" title="'.get_the_title($post_id).'" class="silohon-irp2" style="background-color: '.$bgColor.';border-left: 4px solid '.$borderColor.';">';
+        $outputHtml .= '<div class="irp-relative2">';
+        $outputHtml .= '<p class="irp-title2" style="color: '.$textColor.';">'.get_the_title($post_id).'</p>';
+        $outputHtml .= '<span class="irp-button2" style="background-color: '.$borderColor.'; color: #ffffff;">'.$text.'</span>';
+        $outputHtml .= '</div>';
+        $outputHtml .= '<img style="border-left: 4px solid '.$borderColor.';" src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail2"/>';
+        $outputHtml .= '</a>';
+    } else if( $style === 'style3' ){
+        $outputHtml = '<a target="'.$target.'" href="'. esc_url(get_the_permalink( $post_id )) .'" rel="'.$link.'" title="'.get_the_title($post_id).'" class="silohon-irp3">';
+        $outputHtml .= '<img style="border: 4px solid '.$borderColor.';" src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail3"/>';
+        $outputHtml .= '<div class="irp-relative3" style="background-color: '.$bgColor.';">';
+        $outputHtml .= '<p class="irp-title3" style="color: '.$textColor.';">'.get_the_title($post_id).'</p>';
+        $outputHtml .= '<span class="irp-button3" style="background-color: '.$borderColor.'; color: #ffffff;">'.$text.'</span>';
+        $outputHtml .= '</div>';
+        $outputHtml .= '</a>';
+    } else{
+        $outputHtml = '<a target="'.$target.'" href="'. esc_url(get_the_permalink( $post_id )) .'" rel="'.$link.'" title="'.get_the_title($post_id).'" class="silohon-irp" style="background-color: '.$bgColor.';border-left: 4px solid '.$borderColor.';">';
+        $outputHtml .= '<div class="irp-relative">';
+        $outputHtml .= '<span class="irp-button" style="background-color: '.$borderColor.'; color: #ffffff;">'.$text.'</span>';
+        $outputHtml .= '<p class="irp-title" style="color: '.$textColor.';">'.get_the_title($post_id).'</p>';
+        $outputHtml .= '</div>';
+        $outputHtml .= '<img src="' . $thumbnailUri . '" alt="' . get_the_title($post_id) . '" loading="lazy" class="re-thumbnail"/>';
+        $outputHtml .= '</a>';
+    }
 
     return $outputHtml;
 }

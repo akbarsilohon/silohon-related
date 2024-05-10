@@ -127,7 +127,6 @@
 }
 .irp-relative3{
     position: relative;
-    background-color: goldenrod;
     padding: 10px 10px 10px 70px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
